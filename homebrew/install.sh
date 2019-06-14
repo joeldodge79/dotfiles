@@ -21,4 +21,8 @@ then
 
 fi
 
+brew install coreutils
+brew install tree
+brew install grc
+
 exit 0
