@@ -24,5 +24,7 @@ fi
 brew install coreutils
 brew install tree
 brew install grc
+brew install fzf
+brew install --HEAD universal-ctags/universal-ctags/universal-ctags
 
 exit 0
