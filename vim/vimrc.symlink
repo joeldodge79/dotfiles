@@ -1,14 +1,21 @@
+" General settings
 set nocompatible
 filetype off
 syntax on
-
 filetype indent plugin on
+set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+set hlsearch
+set laststatus=2
+set ruler
 
+" Auto install vim-plug if not present
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+
+" Plugins
 call plug#begin()
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-sensible'
@@ -25,57 +32,63 @@ Plug 'junegunn/fzf'
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'jpalardy/vim-slime'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'liuchengxu/vista.vim'
+Plug 'itchyny/lightline.vim'
 call plug#end()
 
-" Plugin config
+" Specific plugin configs
+"
+" Deoplete
 let g:deoplete#enable_at_startup = 1
 let g:neosnippet#enable_completed_snippet = 1
 " Use <tab> for deoplete autocompletion
 inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
-map <Leader>s : vsp %:p:h <CR>
-map <C-i>p :set paste <CR> i
-map <C-i>n :set nopaste <CR> i
-map <Left> <C-W>h
-map <Right> <C-W>l
-map <Up> <C-W>k
-map <Down> <C-W>j
+" vista.vim and lightline for cool status bar
+" Ensure you have installed some decent font to show these pretty symbols,
+" then you can enable icon for the kind.
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+map <Leader>v :Vista!! <CR>
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+  endfunction
+
+  set statusline+=%{NearestMethodOrFunction()}
+
+  " By default vista.vim never run if you don't call it explicitly.
+  " If you want to show the nearest function in your statusline automatically,
+  " you can add the following line to your vimrc
+  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+let g:lightline = {
+    \ 'colorscheme': 'wombat',
+    \ 'active': {
+    \   'left': [ [ 'mode', 'paste' ],
+    \             [ 'readonly', 'filename', 'modified', 'method' ] ]
+    \ },
+    \ 'component_function': {
+    \   'method': 'NearestMethodOrFunction'
+    \ },
+    \ }
+
 
 " -----
-"Plug 'majutsushi/tagbar'
 "Plugin 'scrooloose/syntastic'
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane":"{right-of}"}
 
-"set tags=~/ua/uaweb/magento/magento-php.tags
-"let g:tagcommands = {
-"\    "php" : {
-"\        "tagfile" : "~/ua/uaweb/magento/.php.tags",
-"\        "args" : "-R",
-"\        "files" : "~/ua/uaweb/magento/**"
-"\    }
-"\}
-"let g:tagbar_autofocus = 1
-
 map <Leader>s : vsp %:p:h <CR>
-map <Leader>r : res +44 <CR>
-"map <Leader>b :TagbarToggle <CR>
-map <C-f> :set noea <CR> :set ea <CR>
 map <C-i>p :set paste <CR> i
 map <C-i>n :set nopaste <CR> i
+
+" Arrow keys to move between splits
 map <Left> <C-W>h
 map <Right> <C-W>l
 map <Up> <C-W>k
 map <Down> <C-W>j
-syntax enable
-vnoremap // y/<C-R>"<CR>
+map <C-i>p :set paste <CR> i
+map <C-i>n :set nopaste <CR> i
 
-" IDE settings
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
-set hlsearch
-set laststatus=2
-set ruler
-autocmd BufWritePre *.p* :%s/\s\+$//e
-"autocmd QuickFixCmdPost *grep* cwindow
-set grepprg=git\ grep\ -n
-nnoremap <leader>g :silent grep! <cword><CR>
+" ??
+"vnoremap // y/<C-R>"<CR>
