@@ -3,7 +3,8 @@ set nocompatible
 filetype off
 syntax on
 filetype indent plugin on
-set tabstop=8 softtabstop=0 expandtab shiftwidth=4 smarttab
+set encoding=UTF-8
+set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
 set hlsearch
 set laststatus=2
 set ruler
@@ -28,13 +29,14 @@ Plug 'wokalski/autocomplete-flow'
 Plug 'Shougo/neosnippet'
 Plug 'Shougo/neosnippet-snippets'
 Plug 'carlitux/deoplete-ternjs'
-Plug 'junegunn/fzf'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'jpalardy/vim-slime'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'liuchengxu/vista.vim'
 Plug 'itchyny/lightline.vim'
+Plug 'ryanoasis/vim-devicons'
 call plug#end()
 
 " Specific plugin configs
@@ -73,10 +75,12 @@ let g:lightline = {
     \ }
 
 
-" -----
-"Plugin 'scrooloose/syntastic'
+" slime
 let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane":"{right-of}"}
+
+" fzf
+map <Leader>f :Tags <CR>
 
 map <Leader>s : vsp %:p:h <CR>
 map <C-i>p :set paste <CR> i
