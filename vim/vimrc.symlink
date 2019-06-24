@@ -37,6 +37,7 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'liuchengxu/vista.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ryanoasis/vim-devicons'
+Plug 'w0rp/ale'
 call plug#end()
 
 " Specific plugin configs
@@ -81,6 +82,15 @@ let g:slime_default_config = {"socket_name": "default", "target_pane":"{right-of
 
 " fzf
 map <Leader>f :Tags <CR>
+
+" ALE
+let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\   'javascript': ['prettier', 'eslint'],
+\}
+let g:ale_fix_on_save = 1
+nmap <silent> <leader>aj :ALENext<cr>
+nmap <silent> <leader>ak :ALEPrevious<cr>
 
 map <Leader>s : vsp %:p:h <CR>
 map <C-i>p :set paste <CR> i
