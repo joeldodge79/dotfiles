@@ -38,10 +38,17 @@ Plug 'liuchengxu/vista.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'w0rp/ale'
+Plug 'scrooloose/nerdcommenter'
 call plug#end()
 
 " Specific plugin configs
-"
+" vim-javascript
+" code folding
+"augroup javascript_folding
+"  au!
+"  au FileType javascript setlocal foldmethod=syntax
+"augroup END
+
 " Deoplete
 let g:deoplete#enable_at_startup = 1
 let g:neosnippet#enable_completed_snippet = 1
@@ -81,7 +88,8 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane":"{right-of}"}
 
 " fzf
-map <Leader>f :Tags <CR>
+map <Leader>ft :Tags <CR>
+map <Leader>ff :Files <CR>
 
 " ALE
 let g:ale_fixers = {
