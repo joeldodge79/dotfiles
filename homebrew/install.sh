@@ -26,5 +26,7 @@ brew install tree
 brew install grc
 brew install fzf
 brew install --HEAD universal-ctags/universal-ctags/universal-ctags
+brew install git
+brew install bash-completion
 
 exit 0
