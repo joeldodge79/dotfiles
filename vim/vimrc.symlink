@@ -1,13 +1,7 @@
 " General settings
 set nocompatible
-filetype off
-syntax on
-filetype indent plugin on
-set encoding=UTF-8
-set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
+"set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
 set hlsearch
-set laststatus=2
-set ruler
 
 " Auto install vim-plug if not present
 if empty(glob('~/.vim/autoload/plug.vim'))
@@ -19,16 +13,27 @@ endif
 " Plugins
 call plug#begin()
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-sensible'
 Plug 'pangloss/vim-javascript'
-Plug 'elzr/vim-json'
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
-Plug 'wokalski/autocomplete-flow'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
+Plug 'leafgarland/typescript-vim'
+"Plug 'elzr/vim-json'
+
 Plug 'carlitux/deoplete-ternjs'
+" see https://github.com/davidhalter/jedi-vim/blob/master/autoload/jedi.vim s:default_settings
+" for mappings
+Plug 'davidhalter/jedi-vim'
+"if has('nvim')
+"  Plug 'deoplete-plugins/deoplete-jedi'
+"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+"  Plug 'Shougo/deoplete.nvim'
+"  Plug 'roxma/nvim-yarp'
+"  Plug 'roxma/vim-hug-neovim-rpc'
+"endif
+
+Plug 'ervandew/supertab'
+"Plug 'wokalski/autocomplete-flow'
+"Plug 'Shougo/neosnippet'
+"Plug 'Shougo/neosnippet-snippets'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
@@ -39,6 +44,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'w0rp/ale'
 Plug 'scrooloose/nerdcommenter'
+Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
+Plug 'tpope/vim-sensible'
 call plug#end()
 
 " Specific plugin configs
@@ -51,9 +58,9 @@ call plug#end()
 
 " Deoplete
 let g:deoplete#enable_at_startup = 1
-let g:neosnippet#enable_completed_snippet = 1
+"let g:neosnippet#enable_completed_snippet = 1
 " Use <tab> for deoplete autocompletion
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+"inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " vista.vim and lightline for cool status bar
 " Ensure you have installed some decent font to show these pretty symbols,
@@ -61,27 +68,26 @@ inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 let g:vista_fzf_preview = ['right:50%']
 let g:vista#renderer#enable_icon = 1
 map <Leader>v :Vista!! <CR>
-function! NearestMethodOrFunction() abort
-  return get(b:, 'vista_nearest_method_or_function', '')
-  endfunction
 
-  set statusline+=%{NearestMethodOrFunction()}
-
-  " By default vista.vim never run if you don't call it explicitly.
-  " If you want to show the nearest function in your statusline automatically,
-  " you can add the following line to your vimrc
-  autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
 let g:lightline = {
     \ 'colorscheme': 'wombat',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'readonly', 'filename', 'modified', 'method' ] ]
+    \             [ 'readonly', 'filename', 'modified' ] ]
     \ },
     \ 'component_function': {
-    \   'method': 'NearestMethodOrFunction'
+    \   'filename': 'LightlineFilename'
     \ },
     \ }
 
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
 
 " slime
 let g:slime_target = "tmux"
@@ -95,12 +101,14 @@ map <Leader>ff :Files <CR>
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['prettier', 'eslint'],
+\   'python': ['yapf'],
 \}
 let g:ale_fix_on_save = 1
+let g:ale_python_auto_pipenv = 1
 nmap <silent> <leader>aj :ALENext<cr>
 nmap <silent> <leader>ak :ALEPrevious<cr>
 
-map <Leader>s : vsp %:p:h <CR>
+map <Leader>p : vsp %:p:h <CR>
 map <C-i>p :set paste <CR> i
 map <C-i>n :set nopaste <CR> i
 
