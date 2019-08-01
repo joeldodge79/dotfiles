@@ -108,6 +108,9 @@ let g:ale_python_auto_pipenv = 1
 nmap <silent> <leader>aj :ALENext<cr>
 nmap <silent> <leader>ak :ALEPrevious<cr>
 
+" NERDTreeIgnore
+let NERDTreeIgnore=['^__pycache__$[[dir]]', '\~$']
+
 map <Leader>p : vsp %:p:h <CR>
 map <C-i>p :set paste <CR> i
 map <C-i>n :set nopaste <CR> i
