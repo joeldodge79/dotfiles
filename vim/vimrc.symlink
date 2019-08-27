@@ -14,10 +14,7 @@ endif
 call plug#begin()
 Plug 'scrooloose/nerdtree'
 Plug 'pangloss/vim-javascript'
-Plug 'leafgarland/typescript-vim'
-"Plug 'elzr/vim-json'
 
-Plug 'carlitux/deoplete-ternjs'
 " see https://github.com/davidhalter/jedi-vim/blob/master/autoload/jedi.vim s:default_settings
 " for mappings
 Plug 'davidhalter/jedi-vim'
@@ -42,25 +39,12 @@ Plug 'ludovicchabant/vim-gutentags'
 Plug 'liuchengxu/vista.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ryanoasis/vim-devicons'
-Plug 'w0rp/ale'
+Plug 'dense-analysis/ale'
 Plug 'scrooloose/nerdcommenter'
-Plug 'google/yapf', { 'rtp': 'plugins/vim', 'for': 'python' }
 Plug 'tpope/vim-sensible'
+Plug 'psf/black'
 call plug#end()
 
-" Specific plugin configs
-" vim-javascript
-" code folding
-"augroup javascript_folding
-"  au!
-"  au FileType javascript setlocal foldmethod=syntax
-"augroup END
-
-" Deoplete
-let g:deoplete#enable_at_startup = 1
-"let g:neosnippet#enable_completed_snippet = 1
-" Use <tab> for deoplete autocompletion
-"inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " vista.vim and lightline for cool status bar
 " Ensure you have installed some decent font to show these pretty symbols,
@@ -101,7 +85,7 @@ map <Leader>ff :Files <CR>
 let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['prettier', 'eslint'],
-\   'python': ['yapf'],
+\   'python': ['black'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_python_auto_pipenv = 1
