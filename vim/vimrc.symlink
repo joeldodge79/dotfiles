@@ -1,6 +1,5 @@
 " General settings
 set nocompatible
-"set tabstop=8 softtabstop=0 expandtab shiftwidth=2 smarttab
 set hlsearch
 
 " Auto install vim-plug if not present
@@ -13,24 +12,18 @@ endif
 " Plugins
 call plug#begin()
 Plug 'scrooloose/nerdtree'
-Plug 'pangloss/vim-javascript'
+" Plug 'pangloss/vim-javascript'
+
+" cucu lsp
+" Plug 'tpope/vim-cucumber'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
 
 " see https://github.com/davidhalter/jedi-vim/blob/master/autoload/jedi.vim s:default_settings
 " for mappings
 Plug 'davidhalter/jedi-vim'
-"if has('nvim')
-"  Plug 'deoplete-plugins/deoplete-jedi'
-"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"else
-"  Plug 'Shougo/deoplete.nvim'
-"  Plug 'roxma/nvim-yarp'
-"  Plug 'roxma/vim-hug-neovim-rpc'
-"endif
 
 Plug 'ervandew/supertab'
-"Plug 'wokalski/autocomplete-flow'
-"Plug 'Shougo/neosnippet'
-"Plug 'Shougo/neosnippet-snippets'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-fugitive'
@@ -43,8 +36,19 @@ Plug 'dense-analysis/ale'
 Plug 'scrooloose/nerdcommenter'
 Plug 'tpope/vim-sensible'
 Plug 'psf/black'
+Plug 'vim-vdebug/vdebug'
 call plug#end()
 
+
+" cucu config
+if executable('cucu')
+  autocmd User lsp_setup call lsp#register_server({
+    \ 'name': 'cucu',
+    \ 'cmd': {server_info->['cucu', 'language-server']},
+    \ 'whitelist': ['cucumber'],
+  \ })
+  autocmd FileType cucumber setlocal omnifunc=lsp#complete
+endif
 
 " vista.vim and lightline for cool status bar
 " Ensure you have installed some decent font to show these pretty symbols,
@@ -86,6 +90,7 @@ let g:ale_fixers = {
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['prettier', 'eslint'],
 \   'python': ['black'],
+\   'ruby': ['rubocop'],
 \}
 let g:ale_fix_on_save = 1
 let g:ale_python_auto_pipenv = 1
@@ -94,6 +99,32 @@ nmap <silent> <leader>ak :ALEPrevious<cr>
 
 " NERDTreeIgnore
 let NERDTreeIgnore=['^__pycache__$[[dir]]', '\~$']
+
+" Vdebug
+let g:vdebug_options_defaults = {
+\    'port' : 9000,
+\    'timeout' : 20,
+\    'server' : '',
+\    'on_close' : 'stop',
+\    'break_on_open' : 0,
+\    'ide_key' : '',
+\    'debug_window_level' : 0,
+\    'debug_file_level' : 0,
+\    'debug_file' : 'vdbug.log',
+\    'path_maps' : {},
+\    'watch_window_style' : 'expanded',
+\    'marker_default' : '⬦',
+\    'marker_closed_tree' : '▸',
+\    'marker_open_tree' : '▾',
+\    'sign_breakpoint' : '▷',
+\    'sign_current' : '▶',
+\    'sign_disabled': '▌▌',
+\    'continuous_mode'  : 1,
+\    'background_listener' : 1,
+\    'auto_start' : 1,
+\    'simplified_status': 1,
+\    'layout': 'vertical',
+\}
 
 map <Leader>p : vsp %:p:h <CR>
 map <C-i>p :set paste <CR> i
@@ -107,5 +138,7 @@ map <Down> <C-W>j
 map <C-i>p :set paste <CR> i
 map <C-i>n :set nopaste <CR> i
 
+" so long ruby files don't loose syntax highlighting
+set redrawtime=10000
 " ??
 "vnoremap // y/<C-R>"<CR>
