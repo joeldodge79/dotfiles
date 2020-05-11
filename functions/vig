@@ -1,0 +1,3 @@
+function vig {
+  vim -O $(git show --format= --name-only)
+}

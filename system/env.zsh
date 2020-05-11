@@ -3,3 +3,4 @@ export EDITOR='vim'
 export PYENV_VIRTUALENVWRAPPER_PREFER_PYVENV="true"
 export PYTHONBREAKPOINT='pudb.set_trace'
 export PYTHONWARNINGS='ignore'
+export CHROMIUM_PATH='/Applications/Chromium.app/Contents/MacOS/Chromium'
