@@ -38,18 +38,14 @@ while test $# -gt 0; do
 	shift
 done
 
-export ZSHDOT=$HOME/.dotfiles
+export ZSH=$HOME/.dotfiles
 
 # Set macOS defaults
-$ZSHDOT/macos/set-defaults.sh
+$ZSH/macos/set-defaults.sh
 
 # Install homebrew
-$ZSHDOT/homebrew/install.sh 2>&1
-
-# Upgrade homebrew
-echo "› brew update"
-brew update
+$ZSH/homebrew/install.sh 2>&1
 
 # Install software
-echo "› $ZSHDOT/script/install"
-$ZSHDOT/script/install
+echo "› $ZSH/script/install"
+$ZSH/script/install

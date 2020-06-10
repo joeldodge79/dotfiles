@@ -1,6 +1,6 @@
 #compdef brew
 
-# Brew ZSHDOT completion function
+# Brew ZSH completion function
 # Drop this somewhere in your $fpath (like /usr/share/zsh/site-functions)
 # and rename it _brew
 #
